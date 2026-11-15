@@ -1594,6 +1594,321 @@
             .splash, .sparks { display: none !important; }
         }
 
+        /* ----- master note editor inside the site ----- */
+        .master-note { display: none; margin-bottom: 1.3rem; }
+        body.is-master .master-note { display: block; }
+
+        .master-note-toggle {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: rgba(245, 185, 66, 0.10);
+            border: 1px solid var(--gold);
+            border-radius: 14px;
+            color: var(--gold-light);
+            font-size: 0.88rem;
+            font-weight: 800;
+            padding: 0.7rem 1rem;
+            min-height: 46px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .master-note-toggle:active { transform: scale(0.98); }
+
+        .master-note-panel {
+            margin-top: 0.7rem;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 0.9rem;
+            animation: popIn 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) backwards;
+        }
+
+        .master-note .note-textarea { min-height: 120px; }
+        .mn-actions { display: flex; gap: 0.6rem; }
+        .mn-actions .primary-btn { flex: 2; }
+        .mn-actions .secondary-btn { flex: 1; margin-top: 0; }
+
+        /* ================== BIG LIFTING LOGO BEHIND ================== */
+        .bg-logo {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .bg-logo-glow {
+            position: absolute;
+            width: min(120vw, 760px);
+            aspect-ratio: 1;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(245, 185, 66, 0.20), transparent 62%);
+            animation: bgGlow 4.2s ease-in-out infinite;
+        }
+
+        .bg-logo-img {
+            position: relative;
+            width: min(94vw, 560px);
+            aspect-ratio: 449 / 464;
+            background: var(--logo) center / contain no-repeat;
+            opacity: 0.12;
+            will-change: transform, opacity;
+            animation: bgLift 4.2s cubic-bezier(0.45, 0, 0.25, 1) infinite;
+        }
+
+        @keyframes bgLift {
+            0%, 8% { transform: translateY(0) scale(1); opacity: 0.10; }
+            46% { transform: translateY(-7vh) scale(1.07); opacity: 0.20; }
+            52% { transform: translateY(-7vh) scale(1.07) rotate(-1.6deg); opacity: 0.20; }
+            58% { transform: translateY(-7vh) scale(1.07) rotate(1.6deg); opacity: 0.20; }
+            64% { transform: translateY(-7vh) scale(1.07) rotate(0); opacity: 0.20; }
+            92%, 100% { transform: translateY(0) scale(1); opacity: 0.10; }
+        }
+
+        @keyframes bgGlow {
+            0%, 8%, 92%, 100% { opacity: 0.45; transform: scale(0.92); }
+            46%, 64% { opacity: 1; transform: scale(1.08); }
+        }
+
+        /* ================== CAPTAIN NOTE: SIDE TAB + DRAWER ================== */
+        .note-tab {
+            position: fixed;
+            left: 0;
+            top: 40%;
+            z-index: 900;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            width: 36px;
+            padding: 0.9rem 0 0.8rem 0;
+            border: none;
+            border-radius: 0 16px 16px 0;
+            background: var(--gold-grad);
+            color: #231503;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 4px 6px 18px rgba(0, 0, 0, 0.45), 0 0 18px rgba(245, 185, 66, 0.35);
+            animation: tabIn 0.6s cubic-bezier(0.2, 0.9, 0.3, 1.2) 0.4s backwards, tabNudge 5s ease-in-out 2.5s infinite;
+        }
+
+        .note-tab i.fa-solid { font-size: 0.95rem; }
+
+        .note-tab-label {
+            writing-mode: vertical-rl;
+            transform: rotate(180deg);
+            font-size: 0.78rem;
+            white-space: nowrap;
+        }
+
+        .note-dot {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: var(--ember);
+            border: 2px solid #0a0f24;
+            animation: dotPulse 1.6s ease-out infinite;
+        }
+
+        @keyframes tabIn { from { transform: translateX(-100%); } to { transform: none; } }
+
+        @keyframes tabNudge {
+            0%, 86%, 100% { transform: none; }
+            91% { transform: translateX(6px); }
+            96% { transform: translateX(0); }
+        }
+
+        @keyframes dotPulse {
+            0% { box-shadow: 0 0 0 0 rgba(255, 122, 69, 0.7); }
+            100% { box-shadow: 0 0 0 10px rgba(255, 122, 69, 0); }
+        }
+
+        .note-drawer { position: fixed; inset: 0; z-index: 2000; }
+
+        .note-backdrop {
+            position: absolute;
+            inset: 0;
+            background: rgba(4, 7, 20, 0.62);
+            -webkit-backdrop-filter: blur(3px);
+            backdrop-filter: blur(3px);
+            opacity: 0;
+            transition: opacity 0.35s ease;
+        }
+
+        .note-panel {
+            position: absolute;
+            top: 0; bottom: 0; left: 0;
+            width: min(88vw, 380px);
+            display: flex;
+            flex-direction: column;
+            background: linear-gradient(160deg, #1b2354 0%, #121836 100%);
+            border-right: 1px solid var(--border);
+            border-radius: 0 26px 26px 0;
+            box-shadow: 10px 0 40px rgba(0, 0, 0, 0.55);
+            transform: translateX(-104%);
+            transition: transform 0.42s cubic-bezier(0.2, 0.9, 0.3, 1);
+            padding-top: env(safe-area-inset-top);
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+
+        .note-drawer.open .note-backdrop { opacity: 1; }
+        .note-drawer.open .note-panel { transform: none; }
+
+        .note-panel-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            padding: 1.1rem 1.1rem 0.9rem 1.1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .note-panel-title { display: flex; align-items: center; gap: 10px; min-width: 0; }
+
+        .note-panel-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--gold-grad);
+            color: #231503;
+            display: grid;
+            place-items: center;
+            flex-shrink: 0;
+        }
+
+        .note-panel-title b { display: block; font-size: 1rem; font-weight: 800; }
+
+        .note-panel-title small {
+            display: block;
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: var(--gold-light);
+            direction: ltr;
+            text-align: start;
+            word-break: break-word;
+        }
+
+        .note-panel-body {
+            flex: 1;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            padding: 1.1rem;
+        }
+
+        .note-text {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-inline-start: 4px solid var(--gold);
+            border-radius: 16px;
+            padding: 1rem;
+            font-size: 1rem;
+            line-height: 2;
+            font-weight: 600;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        .note-meta {
+            margin-top: 0.6rem;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--muted);
+            direction: ltr;
+            text-align: left;
+        }
+
+        .note-empty {
+            text-align: center;
+            color: var(--muted);
+            font-weight: 700;
+            padding: 1.6rem 0.5rem;
+        }
+
+        .note-empty.hidden + * { margin-top: 0; }
+
+        .note-editor { display: none; margin-top: 1.1rem; padding-top: 1rem; border-top: 1px dashed var(--border); }
+        body.is-master .note-editor { display: block; }
+
+        .note-editor-title {
+            font-size: 0.82rem;
+            font-weight: 800;
+            color: var(--gold);
+            margin-bottom: 0.6rem;
+        }
+
+        .note-editor .note-textarea { min-height: 130px; }
+
+        /* ================== INJURY (small + simple) ================== */
+        .inj-card {
+            margin-top: 1rem;
+            text-align: center;
+            animation: fadeUp 0.55s cubic-bezier(0.2, 0.8, 0.2, 1) 0.35s backwards;
+        }
+
+        .inj-toggle {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            background: none;
+            border: none;
+            color: var(--muted);
+            font-size: 0.8rem;
+            font-weight: 700;
+            padding: 0.55rem 0.8rem;
+            min-height: 40px;
+            cursor: pointer;
+        }
+
+        .inj-toggle i { color: var(--ember); font-size: 0.85rem; }
+        .inj-toggle u { color: var(--gold-light); text-underline-offset: 3px; }
+
+        .inj-wrap {
+            display: grid;
+            grid-template-rows: 0fr;
+            transition: grid-template-rows 0.35s ease;
+        }
+
+        .inj-card.open .inj-wrap { grid-template-rows: 1fr; }
+
+        .inj-inner {
+            overflow: hidden;
+            min-height: 0;
+            visibility: hidden;
+            transition: visibility 0s linear 0.35s;
+        }
+
+        .inj-card.open .inj-inner { visibility: visible; transition-delay: 0s; }
+
+        .inj-body {
+            margin-top: 0.3rem;
+            padding: 0.8rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 14px;
+            text-align: start;
+        }
+
+        .inj-hint { font-size: 0.8rem; line-height: 1.8; font-weight: 600; margin-bottom: 0.5rem; }
+
+        .inj-hint a {
+            color: var(--gold-light);
+            font-weight: 800;
+            direction: ltr;
+            unicode-bidi: embed;
+            text-decoration: underline;
+        }
+
+        .inj-body .advice-textarea { min-height: 56px; padding: 0.6rem 0.7rem; font-size: 16px; margin-bottom: 0.5rem; }
+        .inj-body .inline-status { min-height: 0; margin-bottom: 0.3rem; }
+        .inj-body .primary-btn { min-height: 40px; padding: 0.5rem 1rem; font-size: 0.85rem; border-radius: 10px; }
+
         /* ================== MOBILE ================== */
         @media (max-width: 520px) {
             .screen { padding: 1rem; }
@@ -1623,6 +1938,7 @@
         <i class="orb o1"></i>
         <i class="orb o2"></i>
         <i class="orb o3"></i>
+        <div class="bg-logo"><i class="bg-logo-glow"></i><i class="bg-logo-img"></i></div>
         <i class="plate"></i>
         <i class="plate p2"></i>
         <div id="sparks" class="sparks"></div>
@@ -1675,6 +1991,31 @@
                         <i class="fa-solid fa-arrow-left"></i>
                     </button>
                 </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================== MASTER CHOICE ================== -->
+    <div id="master-screen" class="screen hidden">
+        <div class="login-container-wrapper">
+            <div class="login-card-box">
+                <div class="hero-logo-wrap" style="width:120px;">
+                    <div class="hero-glow"></div>
+                    <div class="hero-logo" role="img" aria-label="SMASH GYM"></div>
+                    <div class="hero-shadow"></div>
+                </div>
+                <p class="welcome-text">أهلاً يا ريس 👑<br>تدخل فين؟</p>
+                <div class="login-form">
+                    <button type="button" id="master-go-sheets" class="primary-btn">
+                        <i class="fa-solid fa-chart-column"></i>
+                        <span>الشيتات والغايبين</span>
+                    </button>
+                    <button type="button" id="master-go-site" class="primary-btn">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                        <span>دخول الموقع (تجربة + كتابة النوت)</span>
+                    </button>
+                    <button type="button" id="master-back" class="link-btn">رجوع</button>
+                </div>
             </div>
         </div>
     </div>
@@ -1765,24 +2106,6 @@
                 <p>اختار مرحلتك في الجيم</p>
             </div>
 
-            <div class="advice-box">
-                <div class="advice-head">
-                    <i class="fa-solid fa-triangle-exclamation"></i>
-                    <span>نصيحة مهمة</span>
-                </div>
-                <div class="advice-text">
-                    برجاء في حالة وجود أي نوع من الإصابات السابقة، التواصل أولاً مع الرقم
-                    <a href="tel:01500039337">01500039337</a>
-                    أو اكتب نوع الإصابة هنا وابعتها على واتساب:
-                </div>
-                <textarea id="injury-text" class="advice-textarea" dir="auto" maxlength="500" placeholder="اكتب نوع الإصابة (مثال: شد في الضهر، إصابة في الركبة...)"></textarea>
-                <div id="injury-status" class="inline-status"></div>
-                <button id="injury-send-btn" class="primary-btn wa-btn">
-                    <i class="fa-brands fa-whatsapp"></i>
-                    <span>ابعت الإصابة على واتساب</span>
-                </button>
-            </div>
-
             <div class="programs-grid stagger">
                 <div class="program-card" data-level="first">
                     <div class="program-icon"><i class="fa-solid fa-1"></i></div>
@@ -1818,6 +2141,26 @@
                         <small>نظام غذائي • جدول تمرين • متابعة دورية</small>
                     </div>
                     <i class="fa-solid fa-chevron-left chev"></i>
+                </div>
+            </div>
+
+            <div id="injury-box" class="inj-card">
+                <button type="button" id="injury-toggle" class="inj-toggle" aria-expanded="false" aria-controls="injury-body">
+                    <i class="fa-solid fa-kit-medical"></i>
+                    <span>عندك إصابة سابقة؟ <u>دوس هنا</u></span>
+                </button>
+                <div id="injury-body" class="inj-wrap">
+                    <div class="inj-inner">
+                        <div class="inj-body">
+                            <p class="inj-hint">في حالة أي إصابة سابقة كلّم الكابتن الأول على <a href="tel:01500039337">01500039337</a> أو اكتبها هنا:</p>
+                            <textarea id="injury-text" class="advice-textarea" dir="auto" rows="2" maxlength="500" placeholder="نوع الإصابة..."></textarea>
+                            <div id="injury-status" class="inline-status"></div>
+                            <button id="injury-send-btn" class="primary-btn wa-btn">
+                                <i class="fa-brands fa-whatsapp"></i>
+                                <span>ابعت على واتساب</span>
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -1883,11 +2226,6 @@
                 <h3 id="selected-program-title" style="direction:ltr;">PROGRAM</h3>
                 <p>اختار العضلة أو اليوم</p>
             </div>
-            <div class="note-banner hidden">
-                <div class="note-banner-head"><i class="fa-solid fa-clipboard-list"></i> ملاحظة الكابتن</div>
-                <div class="note-banner-body" dir="auto"></div>
-                <div class="note-banner-meta"></div>
-            </div>
             <div id="categories-grid" class="categories-grid stagger"></div>
         </section>
 
@@ -1897,13 +2235,48 @@
                 <h3 id="selected-category-title" style="direction:ltr;">EXERCISES</h3>
                 <p>دوس على التمرينة عشان تشوف الفيديو</p>
             </div>
-            <div class="note-banner hidden">
-                <div class="note-banner-head"><i class="fa-solid fa-clipboard-list"></i> ملاحظة الكابتن</div>
-                <div class="note-banner-body" dir="auto"></div>
-                <div class="note-banner-meta"></div>
-            </div>
             <div id="slots-container" class="slots-grid-container stagger"></div>
         </section>
+
+        <!-- ============ CAPTAIN NOTE: side tab + drawer ============ -->
+        <button type="button" id="note-tab" class="note-tab hidden" aria-label="ملاحظة الكابتن">
+            <i class="fa-solid fa-clipboard-list"></i>
+            <span class="note-tab-label">ملاحظة الكابتن</span>
+            <b id="note-dot" class="note-dot hidden"></b>
+        </button>
+
+        <div id="note-drawer" class="note-drawer hidden" role="dialog" aria-modal="true" aria-label="ملاحظة الكابتن">
+            <div id="note-backdrop" class="note-backdrop"></div>
+            <aside class="note-panel">
+                <div class="note-panel-head">
+                    <div class="note-panel-title">
+                        <span class="note-panel-icon"><i class="fa-solid fa-clipboard-list"></i></span>
+                        <div>
+                            <b>ملاحظة الكابتن</b>
+                            <small id="note-ctx">GENERAL</small>
+                        </div>
+                    </div>
+                    <button type="button" id="note-close" class="video-close-btn" aria-label="إغلاق">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+                <div class="note-panel-body">
+                    <div id="note-text" class="note-text hidden" dir="auto"></div>
+                    <div id="note-meta" class="note-meta"></div>
+                    <div id="note-empty" class="note-empty">مفيش ملاحظة لسه</div>
+
+                    <div class="note-editor">
+                        <div class="note-editor-title"><i class="fa-solid fa-pen"></i> اكتب / عدّل الملاحظة (للماستر)</div>
+                        <textarea id="nd-text" class="note-textarea" dir="auto" maxlength="3000" placeholder="اكتب الملاحظة اللي هتظهر للمشتركين..."></textarea>
+                        <div id="nd-status" class="note-status"></div>
+                        <div class="mn-actions">
+                            <button type="button" id="nd-save" class="primary-btn"><i class="fa-solid fa-floppy-disk"></i><span>حفظ</span></button>
+                            <button type="button" id="nd-clear" class="secondary-btn"><i class="fa-solid fa-trash"></i><span>مسح</span></button>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </div>
     </div>
 
     <!-- ================== VIDEO MODAL ================== -->
@@ -2358,6 +2731,7 @@
         function resolveProgram(text) {
             const target = normalizeKey(text);
             if (!target) return null;
+            if (['GENERAL', 'HOME', 'WELCOME', 'MAIN'].indexOf(target) !== -1) return 'general';
             for (const key of PROGRAM_ORDER) {
                 const names = (NOTE_ALIASES[key] || []).concat([programsData[key].title]);
                 if (names.some(n => normalizeKey(n) === target)) return key;
@@ -2373,6 +2747,7 @@
                 views[k].classList.toggle('dir-back', k === name && dir === 'back');
             });
             views[name].querySelectorAll('.stagger').forEach(stagger);
+            updateNoteContext();
             backBtn.classList.toggle('hidden', name === 'options');
             logoutBtn.classList.toggle('hidden', name !== 'options');
             window.scrollTo(0, 0);
@@ -2534,7 +2909,7 @@
             'WELCOME CAPTAIN ✅<br>' +
             'TO WRITE A NOTE TYPE:<br>' +
             '<b>' + MASTER_CODE + ' (PROGRAM) NOTE</b><br>' +
-            'PROGRAMS: CLASSIC CYCLE / ARNOLD SPLIT / PPL / UPPER LOWER / CARDIO<br>' +
+            'PROGRAMS: GENERAL / CLASSIC CYCLE / ARNOLD SPLIT / PPL / UPPER LOWER / CARDIO<br>' +
             'EXAMPLE: ' + MASTER_CODE + ' CLASSIC CYCLE NOTE';
 
         loginForm.addEventListener('submit', async (e) => {
@@ -2548,7 +2923,7 @@
             // أكونت الماستر لوحده: صفحة الإدارة
             if (upper === MASTER_CODE) {
                 nameInput.value = '';
-                openAdmin();
+                openMasterChoice();
                 return;
             }
 
@@ -2660,6 +3035,10 @@
             userName = name;
             try { localStorage.setItem('smash_name', name); } catch (e) { /* ignore */ }
 
+            isMaster = false;
+            document.body.classList.remove('is-master');
+            noteCtx.key = null;
+            closeNoteDrawer(true);
             logVisit(member.id);
 
             const firstTwo = name.split(' ').slice(0, 2).join(' ');
@@ -2668,6 +3047,7 @@
 
             $('injury-text').value = '';
             $('injury-status').textContent = '';
+            setInjuryOpen(false);
             resetPlus();
 
             navStack = [];
@@ -2685,7 +3065,12 @@
 
         logoutBtn.addEventListener('click', () => {
             closeVideo();
+            closeNoteDrawer(true);
             appContainer.classList.add('hidden');
+            if (isMaster) {
+                masterScreen.classList.remove('hidden');
+                return;
+            }
             loginScreen.classList.remove('hidden');
             hideMessages();
             setRegisterMode(false);
@@ -2694,6 +3079,8 @@
 
         // ================== ADMIN SHEETS ==================
         const adminScreen = $('admin-screen');
+        const masterScreen = $('master-screen');
+        let isMaster = false;
         const adminContent = $('admin-content');
         const adminStatus = $('admin-status');
         const adminDate = $('admin-date');
@@ -2707,6 +3094,7 @@
             document.querySelectorAll('.admin-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === 'day'));
             updateDateLabel();
             loginScreen.classList.add('hidden');
+            masterScreen.classList.add('hidden');
             adminScreen.classList.remove('hidden');
             loadAdmin();
         }
@@ -2730,6 +3118,44 @@
         $('admin-exit-btn').addEventListener('click', () => {
             adminLoadToken++;
             adminScreen.classList.add('hidden');
+            masterScreen.classList.remove('hidden');
+        });
+
+        // ---------- اختيار الماستر: الشيتات ولا الموقع ----------
+        function openMasterChoice() {
+            hideMessages();
+            loginScreen.classList.add('hidden');
+            adminScreen.classList.add('hidden');
+            masterScreen.classList.remove('hidden');
+        }
+
+        $('master-go-sheets').addEventListener('click', openAdmin);
+
+        $('master-go-site').addEventListener('click', () => {
+            isMaster = true;
+            document.body.classList.add('is-master');
+            noteCtx.key = null;
+            closeNoteDrawer(true);
+            userName = 'Rapi3';
+            userBadgeName.textContent = 'الماستر 👑';
+            optionsName.textContent = 'ريس';
+
+            $('injury-text').value = '';
+            $('injury-status').textContent = '';
+            setInjuryOpen(false);
+            resetPlus();
+
+            navStack = [];
+            currentLevelKey = null;
+            currentProgramKey = null;
+            setView('options');
+
+            masterScreen.classList.add('hidden');
+            appContainer.classList.remove('hidden');
+        });
+
+        $('master-back').addEventListener('click', () => {
+            masterScreen.classList.add('hidden');
             loginScreen.classList.remove('hidden');
         });
 
@@ -2879,6 +3305,17 @@
         }
 
         // ================== INJURY -> WHATSAPP ==================
+        function setInjuryOpen(open) {
+            $('injury-box').classList.toggle('open', open);
+            $('injury-toggle').setAttribute('aria-expanded', open ? 'true' : 'false');
+        }
+
+        $('injury-toggle').addEventListener('click', () => {
+            const open = !$('injury-box').classList.contains('open');
+            setInjuryOpen(open);
+            if (open) setTimeout(() => $('injury-box').scrollIntoView({ behavior: 'smooth', block: 'end' }), 200);
+        });
+
         $('injury-send-btn').addEventListener('click', () => {
             const status = $('injury-status');
             const t = $('injury-text').value.trim();
@@ -2923,7 +3360,6 @@
                 card.addEventListener('click', () => {
                     currentProgramKey = key;
                     renderCategories(key);
-                    loadProgramNote(key);
                     goTo('categories');
                 });
                 programsGrid.appendChild(card);
@@ -3056,29 +3492,162 @@
             }
         }
 
-        // ---------- عرض النوت للمشترك (بانر فوق صفحة التمرينة) ----------
-        function renderNoteBanners(note) {
-            document.querySelectorAll('.note-banner').forEach(banner => {
-                if (note && note.text) {
-                    banner.querySelector('.note-banner-body').textContent = note.text;
-                    banner.querySelector('.note-banner-meta').textContent = 'Updated: ' + formatNoteDate(note.updatedAt);
-                    banner.classList.remove('hidden');
-                } else {
-                    banner.classList.add('hidden');
-                }
-            });
+        // ---------- ملاحظة الكابتن: تبويب جنبي + درج ----------
+        // general = الصفحة الرئيسية بعد الدخول، وباقي المفاتيح = البرامج
+        const noteCtx = { key: null, note: null, token: 0, fetchedAt: 0 };
+        let noteDrawerOpen = false;
+        let ndDirty = false;
+
+        const noteTab = $('note-tab');
+        const noteDot = $('note-dot');
+        const noteDrawer = $('note-drawer');
+        const ndText = $('nd-text');
+        const ndSave = $('nd-save');
+        const ndClear = $('nd-clear');
+
+        function noteTitle(key) {
+            if (key === 'general') return 'الصفحة الرئيسية';
+            return programsData[key] ? programsData[key].title : String(key);
         }
 
-        async function loadProgramNote(programKey) {
-            const myToken = ++noteToken;
-            renderNoteBanners(null);
+        function noteSeenGet(key) {
+            try { return Number(localStorage.getItem('smash_note_seen_' + key)) || 0; } catch (e) { return 0; }
+        }
+
+        function noteSeenSet(key, v) {
+            try { localStorage.setItem('smash_note_seen_' + key, String(v)); } catch (e) { /* ignore */ }
+        }
+
+        function noteKeyForView(view) {
+            if (view === 'options') return 'general';
+            if (view === 'categories' || view === 'slots') return currentProgramKey;
+            return null;
+        }
+
+        function setNdStatus(text, kind) {
+            const st = $('nd-status');
+            st.textContent = text;
+            st.className = 'note-status' + (kind ? ' ' + kind : '');
+        }
+
+        function renderNoteUI() {
+            const n = noteCtx.note;
+            const has = !!(n && n.text);
+
+            $('note-text').textContent = has ? n.text : '';
+            $('note-text').classList.toggle('hidden', !has);
+            $('note-empty').classList.toggle('hidden', has);
+            $('note-meta').textContent = has ? 'Updated: ' + formatNoteDate(n.updatedAt) : '';
+            $('note-ctx').textContent = noteCtx.key ? noteTitle(noteCtx.key) : '';
+
+            if (!ndDirty) ndText.value = has ? n.text : '';
+
+            const show = !!noteCtx.key && (has || isMaster);
+            noteTab.classList.toggle('hidden', !show);
+
+            const unseen = has && !isMaster && Number(n.updatedAt || 0) > noteSeenGet(noteCtx.key);
+            noteDot.classList.toggle('hidden', !unseen);
+        }
+
+        async function loadNote(key) {
+            const my = ++noteCtx.token;
             try {
-                const n = await fetchNote(programKey);
-                if (myToken === noteToken) renderNoteBanners(n);
+                const n = await fetchNote(key);
+                if (my !== noteCtx.token || key !== noteCtx.key) return;
+                noteCtx.note = n;
+                noteCtx.fetchedAt = Date.now();
+                renderNoteUI();
             } catch (e) {
-                /* مفيش نت: ما نظهرش حاجة */
+                if (my === noteCtx.token && isMaster && noteDrawerOpen) {
+                    setNdStatus('مقدرتش أحمّل الملاحظة الحالية. اتأكد من النت قبل ما تحفظ.', 'error');
+                }
             }
         }
+
+        function updateNoteContext() {
+            const key = noteKeyForView(currentView);
+            if (key !== noteCtx.key) {
+                noteCtx.key = key;
+                noteCtx.note = null;
+                ndDirty = false;
+                setNdStatus('', '');
+                closeNoteDrawer(true);
+                renderNoteUI();
+                if (key) loadNote(key);
+            } else if (key && Date.now() - noteCtx.fetchedAt > 20000) {
+                loadNote(key);
+            }
+        }
+
+        function openNoteDrawer() {
+            if (!noteCtx.key) return;
+            noteDrawerOpen = true;
+            noteDrawer.classList.remove('hidden');
+            requestAnimationFrame(() => requestAnimationFrame(() => noteDrawer.classList.add('open')));
+
+            const n = noteCtx.note;
+            if (n && n.text) noteSeenSet(noteCtx.key, Number(n.updatedAt || Date.now()));
+            noteDot.classList.add('hidden');
+            loadNote(noteCtx.key);   // تحديث هادي في الخلفية
+        }
+
+        function closeNoteDrawer(instant) {
+            noteDrawerOpen = false;
+            noteDrawer.classList.remove('open');
+            if (instant) {
+                noteDrawer.classList.add('hidden');
+                return;
+            }
+            setTimeout(() => { if (!noteDrawerOpen) noteDrawer.classList.add('hidden'); }, 420);
+        }
+
+        noteTab.addEventListener('click', openNoteDrawer);
+        $('note-close').addEventListener('click', () => closeNoteDrawer(false));
+        $('note-backdrop').addEventListener('click', () => closeNoteDrawer(false));
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && noteDrawerOpen) closeNoteDrawer(false);
+        });
+
+        ndText.addEventListener('input', () => { ndDirty = true; });
+
+        ndSave.addEventListener('click', async () => {
+            if (!noteCtx.key) return;
+            const text = ndText.value.trim();
+            if (!text) {
+                setNdStatus('اكتب حاجة الأول، أو استخدم "مسح".', 'error');
+                return;
+            }
+            ndSave.disabled = ndClear.disabled = true;
+            setNdStatus('جاري الحفظ...', '');
+            try {
+                await saveNote(noteCtx.key, text);
+                noteCtx.note = { text: text, updatedAt: Date.now() };
+                ndDirty = false;
+                renderNoteUI();
+                setNdStatus('تم الحفظ ✅ المشتركين هيشوفوها دلوقتي', 'ok');
+            } catch (e) {
+                setNdStatus('معرفتش أحفظ. اتأكد من النت وحاول تاني.', 'error');
+            }
+            ndSave.disabled = ndClear.disabled = false;
+        });
+
+        ndClear.addEventListener('click', async () => {
+            if (!noteCtx.key) return;
+            if (!confirm('مسح الملاحظة دي؟')) return;
+            ndSave.disabled = ndClear.disabled = true;
+            setNdStatus('جاري المسح...', '');
+            try {
+                await deleteNote(noteCtx.key);
+                noteCtx.note = null;
+                ndDirty = false;
+                renderNoteUI();
+                setNdStatus('تم المسح ✅', 'ok');
+            } catch (e) {
+                setNdStatus('معرفتش أمسح. اتأكد من النت وحاول تاني.', 'error');
+            }
+            ndSave.disabled = ndClear.disabled = false;
+        });
 
         // ---------- صفحة الماستر (كتابة / تعديل النوت) ----------
         let noteEditingKey = null;
@@ -3098,7 +3667,7 @@
             nameInput.value = '';
 
             noteEditingKey = programKey;
-            noteEditClient.textContent = programsData[programKey].title;
+            noteEditClient.textContent = noteTitle(programKey);
             noteTextarea.value = '';
             setNoteStatus('جاري تحميل الملاحظة الحالية...', '');
             setNoteBusy(true);
@@ -3140,7 +3709,7 @@
 
         noteClearBtn.addEventListener('click', async () => {
             if (!noteEditingKey) return;
-            if (!confirm(`مسح الملاحظة بتاعة ${programsData[noteEditingKey].title}؟`)) return;
+            if (!confirm(`مسح الملاحظة بتاعة ${noteTitle(noteEditingKey)}؟`)) return;
             setNoteBusy(true);
             setNoteStatus('جاري المسح...', '');
             try {
