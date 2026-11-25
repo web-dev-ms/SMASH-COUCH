@@ -1909,6 +1909,203 @@
         .inj-body .inline-status { min-height: 0; margin-bottom: 0.3rem; }
         .inj-body .primary-btn { min-height: 40px; padding: 0.5rem 1rem; font-size: 0.85rem; border-radius: 10px; }
 
+        /* ================== REMINDER CARD + SHEET ================== */
+        .remind-card {
+            width: 100%;
+            margin-top: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 0.75rem 1rem;
+            background: rgba(245, 185, 66, 0.07);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            color: var(--text);
+            text-align: start;
+            cursor: pointer;
+            transition: var(--transition);
+            animation: fadeUp 0.55s cubic-bezier(0.2, 0.8, 0.2, 1) 0.3s backwards;
+        }
+
+        .remind-card:hover, .remind-card:active { border-color: var(--gold); background: rgba(245, 185, 66, 0.12); }
+        .remind-card:active { transform: scale(0.985); }
+
+        .remind-ic {
+            width: 40px;
+            height: 40px;
+            flex-shrink: 0;
+            border-radius: 12px;
+            display: grid;
+            place-items: center;
+            background: var(--gold-grad);
+            color: #231503;
+            font-size: 1rem;
+        }
+
+        .remind-ic i { animation: bellRing 3.6s ease-in-out infinite; transform-origin: 50% 10%; }
+
+        @keyframes bellRing {
+            0%, 70%, 100% { transform: rotate(0); }
+            74% { transform: rotate(14deg); }
+            78% { transform: rotate(-12deg); }
+            82% { transform: rotate(9deg); }
+            86% { transform: rotate(-6deg); }
+            90% { transform: rotate(0); }
+        }
+
+        .remind-text b { display: block; font-size: 0.92rem; font-weight: 800; }
+        .remind-text small { display: block; margin-top: 2px; color: var(--muted); font-size: 0.72rem; font-weight: 700; }
+        .remind-chev { margin-inline-start: auto; color: var(--gold); font-size: 0.85rem; }
+
+        .remind-sheet {
+            position: fixed;
+            inset: 0;
+            z-index: 2200;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+        }
+
+        .remind-backdrop { position: absolute; inset: 0; background: rgba(4, 7, 20, 0.65); animation: fadeIn 0.3s ease; }
+
+        .remind-panel {
+            position: relative;
+            width: 100%;
+            max-width: 520px;
+            max-height: 92vh;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            background: linear-gradient(160deg, #1b2354 0%, #121836 100%);
+            border: 1px solid var(--border);
+            border-bottom: none;
+            border-radius: 24px 24px 0 0;
+            padding: 1.1rem 1.1rem calc(1.2rem + env(safe-area-inset-bottom)) 1.1rem;
+            box-shadow: 0 -16px 40px rgba(0, 0, 0, 0.5);
+            animation: remindUp 0.4s cubic-bezier(0.2, 0.9, 0.3, 1);
+        }
+
+        @keyframes remindUp { from { transform: translateY(100%); } to { transform: none; } }
+
+        .remind-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 0.4rem; }
+        .remind-head b { font-size: 1.02rem; font-weight: 800; }
+
+        .remind-label { font-size: 0.82rem; font-weight: 800; color: var(--gold); margin: 0.8rem 0 0.45rem 0; }
+
+        .remind-chips { display: flex; gap: 0.5rem; margin-bottom: 0.6rem; }
+
+        .remind-chip {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            color: var(--text);
+            border-radius: 12px;
+            padding: 0.6rem 0.3rem;
+            font-size: 0.85rem;
+            font-weight: 800;
+            min-height: 44px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .remind-chip.on { background: var(--gold-grad); color: #231503; border-color: transparent; }
+
+        .remind-input {
+            width: 100%;
+            padding: 0.8rem 0.9rem;
+            border: 1px solid var(--border);
+            background: var(--field);
+            border-radius: 12px;
+            color: var(--text);
+            font-size: 16px;
+            font-weight: 700;
+            outline: none;
+            color-scheme: dark;
+            min-height: 48px;
+        }
+
+        .remind-input:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(245, 185, 66, 0.15); }
+
+        .remind-preview {
+            margin: 0.9rem 0 0.3rem 0;
+            padding: 0.7rem 0.8rem;
+            border-radius: 12px;
+            background: rgba(245, 185, 66, 0.08);
+            border: 1px dashed rgba(245, 185, 66, 0.4);
+            color: var(--gold-light);
+            font-size: 0.85rem;
+            font-weight: 700;
+            line-height: 1.8;
+            text-align: center;
+        }
+
+        #remind-error { min-height: 1.2rem; margin-bottom: 0.5rem; }
+        .remind-panel .primary-btn { margin-top: 0.2rem; }
+
+        /* ================== ABSENT TAB: filter + accordion rows ================== */
+        .mode-chips { display: flex; gap: 0.5rem; margin-bottom: 0.9rem; }
+
+        .mode-chip {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            color: var(--muted);
+            border-radius: 12px;
+            padding: 0.6rem 0.4rem;
+            font-size: 0.8rem;
+            font-weight: 800;
+            min-height: 44px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .mode-chip.on { background: var(--gold-grad); color: #231503; border-color: transparent; }
+
+        .abs-range { font-size: 0.74rem; font-weight: 700; color: var(--muted); margin: -0.2rem 0 0.8rem 0; line-height: 1.8; text-align: center; }
+
+        .sheet-row.absent { padding: 0; gap: 0; }
+
+        .abs-head {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            width: 100%;
+            background: none;
+            border: none;
+            color: var(--text);
+            padding: 0.8rem 0.9rem;
+            text-align: start;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 800;
+            min-height: 52px;
+        }
+
+        .abs-name { flex: 1; min-width: 0; word-break: break-word; }
+
+        .abs-badge {
+            flex-shrink: 0;
+            background: rgba(239, 68, 68, 0.14);
+            border: 1px solid rgba(239, 68, 68, 0.4);
+            color: #fca5a5;
+            border-radius: 999px;
+            padding: 0.15rem 0.6rem;
+            font-size: 0.7rem;
+            font-weight: 800;
+        }
+
+        .abs-chev { color: var(--gold); font-size: 0.8rem; transition: transform 0.3s ease; flex-shrink: 0; }
+        .sheet-row.absent.open .abs-chev { transform: rotate(180deg); }
+
+        .abs-wrap { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.35s ease; }
+        .sheet-row.absent.open .abs-wrap { grid-template-rows: 1fr; }
+
+        .abs-inner { overflow: hidden; min-height: 0; visibility: hidden; transition: visibility 0s linear 0.35s; }
+        .sheet-row.absent.open .abs-inner { visibility: visible; transition-delay: 0s; }
+
+        .abs-body { padding: 0 0.9rem 0.9rem 0.9rem; display: flex; flex-direction: column; gap: 0.6rem; }
+
+        .abs-phone { direction: ltr; text-align: start; font-size: 0.85rem; font-weight: 800; color: var(--gold-light); }
+
         /* ================== MOBILE ================== */
         @media (max-width: 520px) {
             .screen { padding: 1rem; }
@@ -2144,6 +2341,15 @@
                 </div>
             </div>
 
+            <button type="button" id="remind-open" class="remind-card">
+                <span class="remind-ic"><i class="fa-solid fa-bell"></i></span>
+                <span class="remind-text">
+                    <b>فكّرني بميعاد تمريني الجاي</b>
+                    <small>تنبيه على موبايلك قبل الميعاد بساعة</small>
+                </span>
+                <i class="fa-solid fa-chevron-left remind-chev"></i>
+            </button>
+
             <div id="injury-box" class="inj-card">
                 <button type="button" id="injury-toggle" class="inj-toggle" aria-expanded="false" aria-controls="injury-body">
                     <i class="fa-solid fa-kit-medical"></i>
@@ -2237,6 +2443,40 @@
             </div>
             <div id="slots-container" class="slots-grid-container stagger"></div>
         </section>
+
+        <!-- ============ REMINDER: add next training to the phone calendar ============ -->
+        <div id="remind-sheet" class="remind-sheet hidden" role="dialog" aria-modal="true" aria-label="تذكير بميعاد التمرين">
+            <div id="remind-backdrop" class="remind-backdrop"></div>
+            <div class="remind-panel">
+                <div class="remind-head">
+                    <b>فكّرني بميعاد تمريني الجاي</b>
+                    <button type="button" id="remind-close" class="video-close-btn" aria-label="إغلاق"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+
+                <div class="remind-label">اليوم</div>
+                <div class="remind-chips">
+                    <button type="button" class="remind-chip" data-off="0">النهاردة</button>
+                    <button type="button" class="remind-chip" data-off="1">بكرة</button>
+                    <button type="button" class="remind-chip" data-off="2">بعد بكرة</button>
+                </div>
+                <input type="date" id="remind-date" class="remind-input">
+
+                <div class="remind-label">الساعة</div>
+                <input type="time" id="remind-time" class="remind-input">
+
+                <div id="remind-preview" class="remind-preview"></div>
+                <div id="remind-error" class="inline-status"></div>
+
+                <button type="button" id="remind-ics" class="primary-btn">
+                    <i class="fa-solid fa-calendar-plus"></i>
+                    <span>أضف لتقويم الموبايل</span>
+                </button>
+                <button type="button" id="remind-google" class="secondary-btn">
+                    <i class="fa-brands fa-google"></i>
+                    <span>Google Calendar</span>
+                </button>
+            </div>
+        </div>
 
         <!-- ============ CAPTAIN NOTE: side tab + drawer ============ -->
         <button type="button" id="note-tab" class="note-tab hidden" aria-label="ملاحظة الكابتن">
@@ -3066,6 +3306,7 @@
         logoutBtn.addEventListener('click', () => {
             closeVideo();
             closeNoteDrawer(true);
+            closeRemind();
             appContainer.classList.add('hidden');
             if (isMaster) {
                 masterScreen.classList.remove('hidden');
@@ -3100,7 +3341,8 @@
         }
 
         function updateDateLabel() {
-            $('admin-date-label').textContent = adminTab === 'day' ? 'اليوم:' : `آخر ${ABSENT_DAYS} أيام لحد:`;
+            const oneDay = adminTab === 'day' || (adminTab === 'absent' && absentMode === 'yd');
+            $('admin-date-label').textContent = oneDay ? 'اليوم:' : `آخر ${ABSENT_DAYS} أيام لحد:`;
         }
 
         document.querySelectorAll('.admin-tab').forEach(btn => {
@@ -3275,12 +3517,62 @@
             return result;
         }
 
-        function renderAbsentSheet(days, dayData, names, phones) {
-            const list = computeAbsentees(days, dayData);
-            const today = todayKey();
-            const includesToday = days.indexOf(today) !== -1;
+        // فلتر الغايبين: yd = جه إمبارح ومجاش النهارده (الافتراضي) | three = آخر 3 أيام
+        let absentMode = 'yd';
+        let absentArgs = null;
 
-            let html = `<div class="stat-row"><div class="stat-card"><b>${list.length}</b><span>غايبين</span></div></div>`;
+        function computeYesterdayAbsentees(days, dayData) {
+            const n = days.length;
+            const prev = dayData[n - 2] || {};
+            const cur = dayData[n - 1] || {};
+            return Object.keys(prev)
+                .filter(id => !cur[id])
+                .map(id => ({ id: id, came: [days[n - 2]], missed: [days[n - 1]] }));
+        }
+
+        function absentRow(item, names, phones) {
+            const full = nameOf(names, item.id);
+            const phone = phones[item.id] || '';
+            const missedN = item.missed.length;
+            return `<div class="sheet-row absent">
+                <button type="button" class="abs-head" aria-expanded="false">
+                    <span class="abs-name">${esc(full)}</span>
+                    <span class="abs-badge">${missedN === 1 ? 'مجاش' : 'مجاش ' + missedN + ' أيام'}</span>
+                    <i class="fa-solid fa-chevron-down abs-chev"></i>
+                </button>
+                <div class="abs-wrap"><div class="abs-inner"><div class="abs-body">
+                    <div class="abs-phone">${esc(phone || 'مفيش رقم')}</div>
+                    <div class="absent-days">
+                        <div class="came">جه: ${item.came.map(d => esc(dayLabel(d))).join(' • ')}</div>
+                        <div class="missed">مجاش: ${item.missed.map(d => esc(dayLabel(d))).join(' • ')}</div>
+                    </div>
+                    ${actionButtons(phone, full)}
+                </div></div></div>
+            </div>`;
+        }
+
+        function renderAbsentSheet(days, dayData, names, phones) {
+            absentArgs = { days: days, dayData: dayData, names: names, phones: phones };
+
+            const yd = absentMode === 'yd';
+            let list = yd ? computeYesterdayAbsentees(days, dayData) : computeAbsentees(days, dayData);
+            list.sort((x, y) => nameOf(names, x.id).localeCompare(nameOf(names, y.id), 'ar'));
+
+            const n = days.length;
+            const today = todayKey();
+            const includesToday = days[n - 1] === today;
+
+            let html = '<div class="mode-chips">' +
+                `<button type="button" class="mode-chip${yd ? ' on' : ''}" data-absmode="yd">إمبارح ← النهارده</button>` +
+                `<button type="button" class="mode-chip${yd ? '' : ' on'}" data-absmode="three">آخر ${ABSENT_DAYS} أيام</button>` +
+                '</div>';
+
+            if (yd) {
+                html += `<div class="abs-range">جه ${esc(dayLabel(days[n - 2]))} ومجاش ${esc(dayLabel(days[n - 1]))}</div>`;
+            }
+
+            html += `<div class="stat-row"><div class="stat-card"><b>${list.length}</b><span>${yd ? 'جه إمبارح ومجاش' : 'غايبين'}</span></div></div>`;
+
             if (includesToday) {
                 html += '<div class="empty-note" style="padding:0 0 0.8rem 0;font-size:0.78rem;">اليوم لسه ماخلصش، فاللي مدخلش النهاردة ممكن يدخل بعدين.</div>';
             }
@@ -3288,21 +3580,198 @@
             if (!list.length) {
                 html += '<div class="empty-note">مفيش حد غاب 👏</div>';
             } else {
-                html += '<div class="sheet-list">' + list.map(item => {
-                    const full = nameOf(names, item.id);
-                    const phone = phones[item.id] || '';
-                    return `<div class="sheet-row absent">
-                        <div class="who"><b>${esc(full)}</b><small>${esc(phone)}</small></div>
-                        <div class="absent-days">
-                            <div class="came">جه: ${item.came.map(d => esc(dayLabel(d))).join(' • ')}</div>
-                            <div class="missed">مجاش: ${item.missed.map(d => esc(dayLabel(d))).join(' • ')}</div>
-                        </div>
-                        ${actionButtons(phone, full)}
-                    </div>`;
-                }).join('') + '</div>';
+                html += '<div class="sheet-list">' + list.map(item => absentRow(item, names, phones)).join('') + '</div>';
             }
             adminContent.innerHTML = html;
         }
+
+        adminContent.addEventListener('click', (e) => {
+            const chip = e.target.closest('[data-absmode]');
+            if (chip) {
+                absentMode = chip.dataset.absmode;
+                updateDateLabel();
+                if (absentArgs) {
+                    renderAbsentSheet(absentArgs.days, absentArgs.dayData, absentArgs.names, absentArgs.phones);
+                    adminContent.querySelectorAll('.sheet-list').forEach(stagger);
+                }
+                return;
+            }
+            const head = e.target.closest('.abs-head');
+            if (head) {
+                const row = head.closest('.sheet-row');
+                const open = !row.classList.contains('open');
+                row.classList.toggle('open', open);
+                head.setAttribute('aria-expanded', open ? 'true' : 'false');
+            }
+        });
+
+        // ================== REMINDER: ميعاد التمرين الجاي في تقويم الموبايل ==================
+        const REMIND_BEFORE_MIN = 60;                       // التنبيه قبل الميعاد بكام دقيقة
+        const REMIND_TITLE = 'ميعاد تمرين - سماش جيم 💪';
+        const REMIND_NOTE = 'متنساش ميعاد تمرينك النهاردة! 🔥';
+        const GYM_LOCATION = '';                            // اكتب مكان الجيم هنا لو عايزه يظهر في التقويم
+
+        const remindSheet = $('remind-sheet');
+        const remindDate = $('remind-date');
+        const remindTime = $('remind-time');
+
+        // الساعة والتاريخ بتوقيت القاهرة -> وقت UTC (بيراعي التوقيت الصيفي)
+        function cairoToUtcMs(key, hhmm) {
+            const [y, m, d] = key.split('-').map(Number);
+            const [h, mi] = hhmm.split(':').map(Number);
+            const base = Date.UTC(y, m - 1, d, h, mi);
+            const fmt = new Intl.DateTimeFormat('en-US', {
+                timeZone: 'Africa/Cairo', hourCycle: 'h23',
+                year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit'
+            });
+            let guess = base;
+            for (let i = 0; i < 2; i++) {
+                const g = {};
+                fmt.formatToParts(new Date(guess)).forEach(p => { if (p.type !== 'literal') g[p.type] = Number(p.value); });
+                const asUtc = Date.UTC(g.year, g.month - 1, g.day, g.hour, g.minute);
+                guess = base - (asUtc - guess);
+            }
+            return guess;
+        }
+
+        function icsStamp(ms) {
+            return new Date(ms).toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
+        }
+
+        function icsEscape(t) {
+            return String(t).replace(/\\/g, '\\\\').replace(/;/g, '\\;').replace(/,/g, '\\,').replace(/\r?\n/g, '\\n');
+        }
+
+        function icsFold(line) {
+            const parts = [];
+            let rest = line;
+            while (rest.length > 60) { parts.push(rest.slice(0, 60)); rest = ' ' + rest.slice(60); }
+            parts.push(rest);
+            return parts.join('\r\n');
+        }
+
+        function fmt12(hhmm) {
+            const [h, m] = hhmm.split(':').map(Number);
+            const ap = h >= 12 ? 'م' : 'ص';
+            const h12 = h % 12 === 0 ? 12 : h % 12;
+            return h12 + ':' + String(m).padStart(2, '0') + ' ' + ap;
+        }
+
+        function remindStart() {
+            const key = remindDate.value;
+            const hhmm = remindTime.value;
+            if (!key || !hhmm) return null;
+            return cairoToUtcMs(key, hhmm);
+        }
+
+        function remindSetError(t) {
+            $('remind-error').textContent = t;
+            $('remind-error').className = 'inline-status' + (t ? ' error' : '');
+        }
+
+        function remindRefresh() {
+            const key = remindDate.value;
+            const hhmm = remindTime.value;
+            const today = todayKey();
+            document.querySelectorAll('.remind-chip').forEach(c => {
+                c.classList.toggle('on', !!key && addDays(today, Number(c.dataset.off)) === key);
+            });
+            $('remind-preview').textContent = (key && hhmm)
+                ? `ميعادك: ${dayLabel(key)} الساعة ${fmt12(hhmm)} — هننبّهك قبلها بساعة`
+                : 'اختار اليوم والساعة';
+            remindSetError('');
+        }
+
+        function openRemind() {
+            const today = todayKey();
+            remindDate.min = today;
+            remindDate.value = addDays(today, 1);                       // الافتراضي: بكرة
+            const [h, m] = timeLabel(Date.now()).split(':').map(Number); // وفي نفس ساعة تمرينه النهاردة
+            remindTime.value = String(h).padStart(2, '0') + ':' + String(Math.floor(m / 5) * 5).padStart(2, '0');
+            remindRefresh();
+            remindSheet.classList.remove('hidden');
+        }
+
+        function closeRemind() { remindSheet.classList.add('hidden'); }
+
+        $('remind-open').addEventListener('click', openRemind);
+        $('remind-close').addEventListener('click', closeRemind);
+        $('remind-backdrop').addEventListener('click', closeRemind);
+        remindDate.addEventListener('input', remindRefresh);
+        remindTime.addEventListener('input', remindRefresh);
+
+        document.querySelectorAll('.remind-chip').forEach(c => {
+            c.addEventListener('click', () => {
+                remindDate.value = addDays(todayKey(), Number(c.dataset.off));
+                remindRefresh();
+            });
+        });
+
+        function remindValidStart() {
+            const start = remindStart();
+            if (start === null) { remindSetError('اختار اليوم والساعة الأول.'); return null; }
+            if (start <= Date.now()) { remindSetError('اختار ميعاد جاي مش عدّى.'); return null; }
+            return start;
+        }
+
+        $('remind-ics').addEventListener('click', () => {
+            const start = remindValidStart();
+            if (start === null) return;
+            const end = start + 60 * 60 * 1000;
+
+            const lines = [
+                'BEGIN:VCALENDAR',
+                'VERSION:2.0',
+                'PRODID:-//Smash Gym//Training Reminder//AR',
+                'CALSCALE:GREGORIAN',
+                'METHOD:PUBLISH',
+                'BEGIN:VEVENT',
+                'UID:' + start + '-' + Math.random().toString(36).slice(2, 10) + '@smash-gym',
+                'DTSTAMP:' + icsStamp(Date.now()),
+                'DTSTART:' + icsStamp(start),
+                'DTEND:' + icsStamp(end),
+                'SUMMARY:' + icsEscape(REMIND_TITLE),
+                'DESCRIPTION:' + icsEscape(REMIND_NOTE)
+            ];
+            if (GYM_LOCATION) lines.push('LOCATION:' + icsEscape(GYM_LOCATION));
+            lines.push(
+                'BEGIN:VALARM',
+                'TRIGGER:-PT' + REMIND_BEFORE_MIN + 'M',
+                'ACTION:DISPLAY',
+                'DESCRIPTION:' + icsEscape(REMIND_TITLE),
+                'END:VALARM',
+                'END:VEVENT',
+                'END:VCALENDAR'
+            );
+
+            const blob = new Blob([lines.map(icsFold).join('\r\n') + '\r\n'], { type: 'text/calendar;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'smash-training.ics';
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            setTimeout(() => URL.revokeObjectURL(url), 4000);
+            closeRemind();
+        });
+
+        $('remind-google').addEventListener('click', () => {
+            const start = remindValidStart();
+            if (start === null) return;
+            const end = start + 60 * 60 * 1000;
+            let url = 'https://calendar.google.com/calendar/render?action=TEMPLATE' +
+                '&text=' + encodeURIComponent(REMIND_TITLE) +
+                '&dates=' + icsStamp(start) + '/' + icsStamp(end) +
+                '&details=' + encodeURIComponent(REMIND_NOTE);
+            if (GYM_LOCATION) url += '&location=' + encodeURIComponent(GYM_LOCATION);
+            window.open(url, '_blank', 'noopener');
+            closeRemind();
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && !remindSheet.classList.contains('hidden')) closeRemind();
+        });
 
         // ================== INJURY -> WHATSAPP ==================
         function setInjuryOpen(open) {
